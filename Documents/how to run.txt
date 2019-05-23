@@ -1,0 +1,8 @@
+*) Import Kamene library for reading pcap files. 
+- pip3 install kamene
+
+*) Run
+Windows: py -3 DDOS_Detector.py
+My laptop: py -3.5 DDOS_Detector.py
+
+Unix: python3 DDOS_Detector.py

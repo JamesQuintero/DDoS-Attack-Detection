@@ -1,0 +1,3 @@
+https://scapy.readthedocs.io/en/latest/usage.html#starting-scapy
+
+More recent Scapy version: https://github.com/phaethon/kamene
