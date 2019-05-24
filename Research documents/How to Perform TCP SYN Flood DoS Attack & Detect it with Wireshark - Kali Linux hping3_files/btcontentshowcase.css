@@ -1,0 +1,264 @@
+/*======= BT CONTENT SHOWCASE ========*/
+
+.defaultLayout .bt-contentshowcase {
+    position: relative;
+    border: none;
+}
+
+.defaultLayout .bt-contentshowcase a:hover {
+    background-color: #fff;
+    color: #363636;
+}
+
+.defaultLayout .slides_container {
+    overflow: hidden;
+    position: relative;
+    background: #fff;
+}
+
+.defaultLayout .bt-contentshowcase h3 {
+    color: #d67901;
+    line-height: 37px;
+    text-indent: 15px;
+    text-transform: uppercase;
+    background: url(../images/bg-header.png) repeat-x;
+    height: 37px;
+    border: 1px solid #cfcfcf;
+    margin: 0 !important;
+}
+.defaultLayout .bt-contentshowcase h3 a{
+    color: #d67901;
+}
+/*
+        Next/prev buttons
+*/
+.defaultLayout .next,.defaultLayout .prev {
+    display: block;
+    width: 10px;
+    height: 15px;
+}
+
+.defaultLayout .bt_handles {
+    border: 1px solid red;
+    position: absolute !important;
+    margin:  0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    z-index:999;
+}
+
+
+
+.defaultLayout p.bt-readmore {
+    text-align: left;
+    clear:both;
+}
+
+.defaultLayout p.bt-readmore a {
+    color: #d67900;
+}
+
+.defaultLayout p.bt-readmore a:hover,.defaultLayout p.bt-readmore a:active {
+    background: #ffffff;
+}
+
+
+/*
+        Handle
+*/
+.defaultLayout .bt_handles li {
+    float: left;
+    margin: 0 1px;
+    list-style: none;
+    padding:0px;
+}
+
+.defaultLayout .bt_handles li a {
+    display: block !important;
+    width: 12px;
+    height: 0;
+    padding-top: 12px;
+    background-image: url(../images/pagination.png);
+    background-position: 0 0;
+    float: left;
+    padding: 12px 0 0 0 !important;
+    overflow: hidden;
+}
+
+.defaultLayout .bt_handles li a:active,.defaultLayout .bt_handles li a:focus,.defaultLayout .bt_handles li a:hover {
+    background-color: transparent !important;
+}
+
+.defaultLayout .bt_handles li.current a {
+    background-position: 0 -12px;
+}
+
+.defaultLayout .bt-container {
+    position: relative;
+}
+
+
+
+/* main flash */
+.defaultLayout .bt-main-wapper {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.defaultLayout .bt-main-wapper .bt-main-item {
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.defaultLayout .bt-row {
+    position: relative;
+    overflow: hidden;
+    padding: 8px 0px 8px 0;
+    float: left;
+}
+/*** CSS STYLE FOR ITEM ****/
+.defaultLayout .bt-inner {
+    margin-left: 10px;
+    position: relative;
+
+}
+
+.defaultLayout .bt-inner a {
+    text-decoration: none;
+}
+
+.defaultLayout .bt-inner img {
+    outline: 1px solid #b5b5b5;
+    border: 2px solid #fff;
+	max-width:98%;
+}
+
+.defaultLayout .bt-inner .bt-title {
+
+    padding: 0 0px 10px 0px;
+    display: block !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 16px;
+}
+.defaultLayout .bt-inner .bt-title-nointro {
+
+    padding: 0 0px 10px 0px;
+    color: #d67900;
+    font-weight: bold;
+}
+
+.defaultLayout .bt-inner .bt-category {
+
+    color: #4a4a4a;
+    margin: 0 0px 10px 0px;
+    display: block;
+    font-weight: bold;
+}
+
+.defaultLayout .bt-inner .bt-introtext {
+
+    margin: 5px 0px 5px 0px;
+    display: block;
+    font-weight: normal;
+}
+.defaultLayout .bt-inner .bt-introtext img {
+    margin: 5px 0px;
+
+}
+.defaultLayout .bt-extra {
+
+    margin-top: 5px;
+}
+
+.defaultLayout .bt-date,.defaultLayout .bt-author {
+    font-weight: normal;
+    font-size: 80%;
+}
+
+.defaultLayout .bt-row-separate {
+    clear: both;
+    height: 1px;
+    border-bottom: 1px dotted #959595;
+    margin: 0px 10px;
+    margin-bottom: 15px;
+}
+
+.defaultLayout .bt-contentshowcase ul li{
+    display: block;
+}
+
+.defaultLayout .btcontentshowcase-prev {
+    background: url(../images/re-left.png) !important;
+    _text-indent: -9999px;
+    margin:0 3px;
+    padding:0;
+    width: 10px; height: 15px;
+    cursor: pointer;
+    float: right;
+}
+
+.defaultLayout .btcontentshowcase-prev:hover{
+    background: url(../images/re-left-hover.png) scroll 0 0 transparent
+        !important;
+}
+.defaultLayout .btcontentshowcase-next {
+    background: url(../images/re-right.png) !important;
+    _text-indent: -9999px;
+    margin:0 3px;
+    padding:0;
+    width: 10px; height: 15px;
+    cursor: pointer;
+    float: right;
+}
+
+.defaultLayout .btcontentshowcase-next:hover{
+    background: url(../images/re-right-hover.png) scroll 0 0 transparent
+        !important;
+}
+.defaultLayout  #btcontentshowcase-control{
+    margin: 5px 0px;
+    width: 100%;
+}
+.defaultLayout .btcontentshowcase-navigation{
+    float: right;
+    margin: 1px 3px;
+}
+.defaultLayout .btcontentshowcase-navigation .bullet{
+    background-image: url("../images/bullet.png");
+    background-position: 0 0;
+    display: block !important;
+    float: left;
+    height: 12px;
+    overflow: hidden;
+    width: 12px;
+    text-indent: 9999px;
+    margin: 0px 1px;
+}
+.defaultLayout .btcontentshowcase-navigation .bullet:hover,
+.defaultLayout .btcontentshowcase-navigation .bullet.current{
+    background-position: 0 12px;
+}
+.defaultLayout .btcontentshowcase-navigation a{
+    text-decoration: none !important;
+}
+
+.defaultLayout .btcontentshowcase-navigation .number{
+    background-image: url("../images/number.png"); background-position: 0 14px;
+    display: block !important;
+    float: left;
+    width: 14px; height: 14px; line-height: 13px;
+    margin: 0 1px;
+    overflow: hidden;
+    text-align: center;
+    color: #ffffff; font-weight: bold; font-size: 10px;
+}
+.defaultLayout .btcontentshowcase-navigation .number:hover,
+.defaultLayout .btcontentshowcase-navigation .number.current{
+    background-position: 0 0;
+}
