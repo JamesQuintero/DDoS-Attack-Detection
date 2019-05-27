@@ -1,0 +1,143 @@
+###[ Ethernet ]###
+  dst       = ff:ff:ff:ff:ff:ff
+  src       = 00:50:8b:2a:96:0a
+  type      = 0x800
+###[ IP ]###
+     version   = 4
+     ihl       = 5
+     tos       = 0x0
+     len       = 96
+     id        = 7
+     flags     =
+     frag      = 0
+     ttl       = 128
+     proto     = udp
+     chksum    = 0x1255
+     src       = 10.100.9.107
+     dst       = 10.100.9.255
+     \options   \
+###[ UDP ]###
+        sport     = netbios_ns
+        dport     = netbios_ns
+        len       = 76
+        chksum    = 0xdd80
+###[ NBNS query request ]###
+           NAME_TRN_ID= 64045
+           FLAGS     = 10512
+           QDCOUNT   = 1
+           ANCOUNT   = 0
+           NSCOUNT   = 0
+           ARCOUNT   = 1
+           QUESTION_NAME= b'HEADLESS-PC    '
+           SUFFIX    = workstation
+           NULL      = 0
+           QUESTION_TYPE= NB
+           QUESTION_CLASS= INTERNET
+###[ Raw ]###
+              load      = b'\xc0\x0c\x00 \x00\x01\x00\x04\x93\xe0\x00\x06\x00\x00\nd\tk'
+
+
+
+
+
+
+###[ Ethernet ]###
+  dst       = 00:50:8b:2a:96:0a
+  src       = 00:06:5b:fc:e2:99
+  type      = 0x800
+###[ IP ]###
+     version   = 4
+     ihl       = 5
+     tos       = 0x0
+     len       = 182
+     id        = 2540
+     flags     =
+     frag      = 0
+     ttl       = 128
+     proto     = udp
+     chksum    = 0x915
+     src       = 10.100.9.4
+     dst       = 10.100.9.107
+     \options   \
+###[ UDP ]###
+        sport     = domain
+        dport     = 54910
+        len       = 162
+        chksum    = 0x399e
+###[ DNS ]###
+           id        = 3645
+           qr        = 1
+           opcode    = QUERY
+           aa        = 1
+           tc        = 0
+           rd        = 1
+           ra        = 1
+           z         = 0
+           ad        = 0
+           cd        = 0
+           rcode     = ok
+           qdcount   = 1
+           ancount   = 1
+           nscount   = 0
+           arcount   = 1
+           \qd        \
+            |###[ DNS Question Record ]###
+            |  qname     = '_ldap._tcp.Default-First-Site-Name._sites.dc._msdcs.halloweenjob.com.'
+            |  qtype     = SRV
+            |  qclass    = IN
+           \an        \
+            |###[ DNS Resource Record ]###
+            |  rrname    = '_ldap._tcp.Default-First-Site-Name._sites.dc._msdcs.halloweenjob.com.'
+            |  type      = SRV
+            |  rclass    = IN
+            |  ttl       = 600
+            |  rdlen     = 40
+            |  rdata     = b'\x00\x00\x00d\x01\x85\x0fhalloweenjob-dc\x0challoweenjob\x03com\x00'
+           ns        = None
+           \ar        \
+            |###[ DNS Resource Record ]###
+            |  rrname    = 'halloweenjob-dc.halloweenjob.com.'
+            |  type      = A
+            |  rclass    = IN
+            |  ttl       = 1200
+            |  rdlen     = 4
+            |  rdata     = '10.100.9.4'
+
+
+
+
+###[ Ethernet ]###
+  dst       = 00:06:5b:fc:e2:99
+  src       = 00:50:8b:2a:96:0a
+  type      = 0x800
+###[ IP ]###
+     version   = 4
+     ihl       = 5
+     tos       = 0x0
+     len       = 241
+     id        = 13
+     flags     =
+     frag      = 0
+     ttl       = 128
+     proto     = udp
+     chksum    = 0x12b9
+     src       = 10.100.9.107
+     dst       = 10.100.9.4
+     \options   \
+###[ UDP ]###
+        sport     = 62062
+        dport     = 389
+        len       = 221
+        chksum    = 0xe32b
+###[ Raw ]###
+           load      = b'0\x84\x00\x00\x00\xcf\x02\x01\x01c\x84\x00\x00\x00\xc6\x04\x00\n\x01\x00\n\x01\x00\x02\x01\x00\x02\x01\x00\x01\x01\x00\xa0\x84\x00\x00\x00\x9f\xa
+3\x84\x00\x00\x00\x1e\x04\tDnsDomain\x04\x11halloweenjob.com.\xa3\x84\x00\x00\x00\x13\x04\x04Host\x04\x0bHEADLESS-PC\xa3\x84\x00\x00\x00%\x04\tDomainSid\x04\x18\x01\x04\x
+00\x00\x00\x00\x00\x05\x15\x00\x00\x00\xe1\x82\xd2\xbd/m\x97Q\x8f\xab\xbb\x0e\xa3\x84\x00\x00\x00\x1e\x04\nDomainGuid\x04\x100\x14\x89\xf6\xe1g\xdbN\xb0\x00bx\x95\xc7\x05
+\xd7\xa3\x84\x00\x00\x00\r\x04\x05NtVer\x04\x04\x16\x00\x00\x000\x84\x00\x00\x00\n\x04\x08Netlogon'
+
+
+
+
+
+
+

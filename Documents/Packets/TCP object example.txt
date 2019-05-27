@@ -1,0 +1,75 @@
+###[ Ethernet ]###
+  dst       = 00:06:5b:fc:e2:99
+  src       = 00:50:8b:2a:96:0a
+  type      = 0x800
+###[ IP ]###
+     version   = 4
+     ihl       = 5
+     tos       = 0x0
+     len       = 52
+     id        = 15
+     flags     = DF
+     frag      = 0
+     ttl       = 128
+     proto     = tcp
+     chksum    = 0xd37e
+     src       = 10.100.9.107
+     dst       = 10.100.9.4
+     \options   \
+###[ TCP ]###
+        sport     = 49155
+        dport     = epmap
+        seq       = 2476916943
+        ack       = 0
+        dataofs   = 8
+        reserved  = 0
+        flags     = S
+        window    = 8192
+        chksum    = 0x12dd
+        urgptr    = 0
+        options   = [('MSS', 1460), ('NOP', None), ('WScale', 8), ('NOP', None), ('NOP', None), ('SAckOK', b'')]
+
+
+
+
+
+###[ Ethernet ]###
+  dst       = 00:06:5b:fc:e2:99
+  src       = 00:50:8b:2a:96:0a
+  type      = 0x800
+###[ IP ]###
+     version   = 4
+     ihl       = 5
+     tos       = 0x0
+     len       = 200
+     id        = 17
+     flags     = DF
+     frag      = 0
+     ttl       = 128
+     proto     = tcp
+     chksum    = 0xd2e8
+     src       = 10.100.9.107
+     dst       = 10.100.9.4
+     \options   \
+###[ TCP ]###
+        sport     = 49155
+        dport     = epmap
+        seq       = 2476916944
+        ack       = 1201220129
+        dataofs   = 5
+        reserved  = 0
+        flags     = PA
+        window    = 256
+        chksum    = 0x535a
+        urgptr    = 0
+        options   = []
+###[ Raw ]###
+           load      = b'\x05\x00\x0b\x03\x10\x00\x00\x00\xa0\x00\x00\x00\x02\x00\x00\x00\xd0\x16\xd0\x16\x00\x00\x00\x00\x03\x00\x00\x00\x00\x00\x01\x00\x08\x83\xaf\xe1\
+x1f]\xc9\x11\x91\xa4\x08\x00+\x14\xa0\xfa\x03\x00\x00\x00\x04]\x88\x8a\xeb\x1c\xc9\x11\x9f\xe8\x08\x00+\x10H`\x02\x00\x00\x00\x01\x00\x01\x00\x08\x83\xaf\xe1\x1f]\xc9\x11
+\x91\xa4\x08\x00+\x14\xa0\xfa\x03\x00\x00\x003\x05qq\xba\xbe7I\x83\x19\xb5\xdb\xef\x9c\xcc6\x01\x00\x00\x00\x02\x00\x01\x00\x08\x83\xaf\xe1\x1f]\xc9\x11\x91\xa4\x08\x00+\
+x14\xa0\xfa\x03\x00\x00\x00,\x1c\xb7l\x12\x98@E\x03\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00'
+
+
+
+
+

@@ -1,0 +1,25 @@
+###[ Ethernet ]###
+  dst= 00:24:97:2e:d6:c0
+  src= 00:00:16:aa:bb:cc
+  type= 0x800
+###[ IP ]###
+     version= 4L
+     ihl= 5L
+     tos= 0x0
+     len= 84
+     id= 57299
+     flags= 
+     frag= 0L
+     ttl= 64
+     proto= icmp
+     chksum= 0x0
+     src= 172.16.20.10
+     dst= 4.2.2.1
+     \options\
+###[ ICMP ]###
+        type= echo-request
+        code= 0
+        chksum= 0xd8af
+        id= 0x9057
+        seq= 0x0
+###[ Raw ]###
