@@ -1,0 +1,137 @@
+/**
+ * @package    AcyMailing for Joomla!
+ * @version    5.10.4
+ * @author     acyba.com
+ * @copyright  (C) 2009-2018 ACYBA S.A.R.L. All rights reserved.
+ * @license    GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+ */
+
+.acymailing_form .grecaptcha-badge{
+	display: none;
+}
+
+div.acymailing_module, .acymailing_module div{
+	padding: 0 !important;
+	margin: 0 !important;
+	border-style:none !important;
+}
+
+table.acymailing_form{
+	margin:auto;
+	border:0px !important;
+}
+
+a.acymailing_togglemodule{
+	display : block;
+	font-size:16px;
+}
+
+.acymailing_mootoolsbutton p{
+	text-align:center;
+}
+
+.acysubbuttons{
+	text-align:center;
+}
+
+img.captchaimagemodule{
+	border:1px solid #dddddd;
+	float: left;
+}
+
+.captchakeymodule .captchafield{
+	margin-top:3px;
+	margin-left:2px;
+}
+
+.acymailing_fulldiv tr, .acymailing_fulldiv td{
+	border:0px;
+}
+
+.acymailing_module_form td {
+	padding-bottom: 5px;
+	vertical-align:top;
+}
+
+div.acymailing_module_error {
+	color: #400;
+	background-color: #fdd;
+	padding: 1em !important;
+	margin-bottom:10px;
+}
+
+div.acymailing_module_success {
+	color: #130;
+	background-color: #dfc;
+	padding: 1em !important;
+	z-index: 10;
+	margin-bottom:10px;
+}
+
+.acymailing_module_form .acymailing_introtext{
+	 padding-bottom:10px;
+	 display:block;
+}
+
+.refreshCaptchaModule{
+	background-image:url(../images/refresh.png);
+	width:16px;
+	height:16px;
+	display:block;
+	float:left;
+	cursor:pointer;
+}
+
+.acymailing_module fieldset{
+	border: solid 1px #ccc;
+	padding: 5px;
+}
+.category_warning{
+	color: red;
+}
+
+.hide {
+	display: none;
+}
+
+.slide_open{
+	animation: deployslide 0.5s forwards;
+	overflow: hidden;
+}
+
+@keyframes deployslide{
+	from{
+		max-height: 0px;
+	}
+	to{
+		max-height: 800px;
+	}
+}
+
+@keyframes retractslide{
+	from{
+		max-height: 800px;
+	}
+	to{
+		max-height: 0px;
+		display: none;
+	}
+}
+
+.slide_close{
+	animation: retractslide 0.5s forwards;
+	overflow: hidden;
+	background-color: #fff;
+	box-shadow: 0px 1px 5px #eee;
+	padding: 5px;
+	margin-bottom: 20px;
+}
+
+.slide_open{
+	animation: deployslide 0.5s forwards;
+	overflow: hidden;
+	background-color: #fff;
+	box-shadow: 0px 1px 5px #eee;
+	padding: 5px;
+	margin-bottom: 20px;
+}
