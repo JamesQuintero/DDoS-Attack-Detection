@@ -1,3 +1,13 @@
+## James Quintero
+## https://github.com/JamesQuintero
+## Created: 5/2019
+## Modified: 5/2019
+##
+## Reads PCAP files containing network packets
+
+
+
+
 import codecs
 
 from kamene.all import * #library used to read pcap fils
@@ -12,6 +22,7 @@ class PCAPHandler:
 	def __init__(self):
 		
 		self.pkt_strings[1] = "ICMP"
+		self.pkt_strings[2] = "ROUTER"
 		self.pkt_strings[6] = "TCP"
 		self.pkt_strings[17] = "UDP"
 
@@ -72,10 +83,10 @@ class PCAPHandler:
 
 
 
-		information = []
+		all_packets = []
 
 		for pkt in packets:
-			print(pkt.show())
+			# print(pkt.show())
 
 			# print(pkt[IP].dst)
 			# print()
@@ -92,26 +103,29 @@ class PCAPHandler:
 			packet_info['source'] = pkt[IP].src
 			packet_info['destination'] = pkt[IP].dst
 
+			#list containing packet specific information based on the packet type
+			packet_info['packet_info'] = {}
+
 			#if packet is of type UDP
 			if packet_info['packet_type']=="UDP":
-				packet_info['source_port'] = pkt[UDP].sport
-				packet_info['destination_port'] = pkt[UDP].dport
-				packet_info['udp_len'] = pkt[UDP].len
-				packet_info['udp_checksum'] = pkt[UDP].chksum
+				packet_info['packet_info']['source_port'] = pkt[UDP].sport
+				packet_info['packet_info']['destination_port'] = pkt[UDP].dport
+				packet_info['packet_info']['udp_len'] = pkt[UDP].len
+				packet_info['packet_info']['udp_checksum'] = pkt[UDP].chksum
 
 			#if packet is of type TCP
 			elif packet_info['packet_type']=="TCP": 
-				packet_info['source_port'] = pkt[TCP].sport
-				packet_info['destination_port'] = pkt[TCP].dport
-				packet_info['ack'] = pkt[TCP].ack
-				packet_info['flags'] = pkt[TCP].flags
-				packet_info['tcp_checksum'] = pkt[TCP].chksum
-				packet_info['tcp_options'] = pkt[TCP].options
+				packet_info['packet_info']['source_port'] = pkt[TCP].sport
+				packet_info['packet_info']['destination_port'] = pkt[TCP].dport
+				packet_info['packet_info']['ack'] = pkt[TCP].ack
+				packet_info['packet_info']['flags'] = pkt[TCP].flags
+				packet_info['packet_info']['tcp_checksum'] = pkt[TCP].chksum
+				packet_info['packet_info']['tcp_options'] = pkt[TCP].options
 
 			#if packet is of type ICMP
 			elif packet_info['packet_type']=="ICMP":
-				packet_info['icmp_type'] = pkt[ICMP].type
-				packet_info['icmp_checksum'] = pkt[ICMP].chksum
+				packet_info['packet_info']['icmp_type'] = pkt[ICMP].type
+				packet_info['packet_info']['icmp_checksum'] = pkt[ICMP].chksum
 
 			#get the load if there is one
 			try:
@@ -120,38 +134,42 @@ class PCAPHandler:
 				packet_info['load'] = None
 
 
+			all_packets.append(packet_info)
 
 
-			# print("Packet type: "+str(packet_info['packet_type']))
-			# print("Checksum: "+str(packet_info['checksum']))
-			# print("Length: "+str(packet_info['length'])+" bits")
-			# print("Source: "+str(packet_info['source']))
-			# print("Destination: "+str(packet_info['destination']))
-			# print("source_port: "+str(packet_info['source_port']))
-			# print("destination_port: "+str(packet_info['destination_port']))
-			# print("load: "+str(packet_info['load']))
 
+
+
+
+
+		for x in range(0, len(all_packets)):
 			print("Information: ")
+			packet_info = all_packets[x]
 			for key in packet_info:
 				print(key+": "+str(packet_info[key]))
+			print()
 
-			input()
 
-		for x in range(0, len(packets)):
-			# print(packets[x])
-			pkt = packets[x]
-
-			# #prints packets in hex format
-			# print(hexdump(pkt))
-
-			#prints the bytes version of the already byte default packet
-			# print(bytes(pkt))
-
-			print(Ether(pkt))
+		return packet_info
 
 
 
-			input()
+
+		# for x in range(0, len(packets)):
+		# 	# print(packets[x])
+		# 	pkt = packets[x]
+
+		# 	# #prints packets in hex format
+		# 	# print(hexdump(pkt))
+
+		# 	#prints the bytes version of the already byte default packet
+		# 	# print(bytes(pkt))
+
+		# 	print(Ether(pkt))
+
+
+
+		# 	input()
 
 		print("Num packets: "+str(len(packets)))
 
@@ -162,3 +180,5 @@ if __name__=="__main__":
 
 	test_path = "./Datasets/2018-10-31-traffic-analysis-exercise.pcap"
 	pcap_handler.read_pcap(test_path)
+
+	

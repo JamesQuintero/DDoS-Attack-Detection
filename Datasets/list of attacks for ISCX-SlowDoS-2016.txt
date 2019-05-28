@@ -1,0 +1,40 @@
+slowbody2	 to		75.127.97.72	 after 00:53 minutes
+slowread	 to		75.127.97.72	 after 01:58 minutes
+ddossim		 to		75.127.97.72	 after 02:22 minutes
+goldeneye	 to		75.127.97.72	 after 02:50 170 minutes
+slowheaders	 to		74.63.40.21	 	 after 02:57 177 minutes
+rudy		 to		75.127.97.72	 after 03:08 188 minutes
+ddossim		 to		97.74.144.108	 after 03:28 208 minutes
+rudy		 to		208.113.162.153	 after 03:29 209 minutes
+hulk		 to		69.84.133.138	 after 04:38 278 minutes
+slowheaders	 to		67.220.214.50	 after 06:00 360 minutes
+goldeneye	 to		97.74.144.108	 after 07:06 426 minutes
+slowbody2	 to		69.192.24.88	 after 08:13 493 minutes
+slowbody2	 to		97.74.144.108	 after 09:03 543 minutes
+slowbody2	 to		203.73.24.75	 after 09:09 549 minutes
+rudy		 to		97.74.144.108	 after 09:20 560 minutes
+slowread	 to		74.55.1.4	 	 after 11:02 662 minutes
+slowheaders	 to		97.74.104.201	 after 11:27 687 minutes
+hulk		 to		74.55.1.4	 	 after 13:33 813 minutes
+hulk		 to		69.192.24.88	 after 13:47 827 minutes
+slowloris	 to		97.74.144.108	 after 15:20 920 minutes
+slowheaders	 to		97.74.144.108	 after 15:47 947 minutes
+slowloris	 to		75.127.97.72	 after 16:33 993 minutes
+slowheaders	 to		75.127.97.72	 after 17:13 1033 minutes
+goldeneye	 to		69.192.24.88	 after 19:23 1163 minutes
+hulk		 to		75.127.97.72	 after 19:25 1165 minutes
+rudy		 to		74.55.1.4	 	 after 20:59 1259 minutes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
