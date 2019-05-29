@@ -86,7 +86,7 @@ class PCAPHandler:
 		all_packets = []
 
 		for pkt in packets:
-			# print(pkt.show())
+			print(pkt.show())
 
 			# print(pkt[IP].dst)
 			# print()

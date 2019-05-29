@@ -11,14 +11,24 @@ from os.path import isfile, join
 
 
 from data_handler import DataHandler
+from DDoS_detector import DDoSDetector
 
 
 
 class Main():
 
 
+    #DataHandler object 
+    data_handler = None
+
+    #DDoSDetector object
+    DDoS_detector = None
+
+
+
     def __init__(self):
-        pass
+        self.data_handler = DataHandler()
+        self.DDoS_detector = DDoSDetector()
 
 
     #gives the user a menu
@@ -38,8 +48,7 @@ class Main():
 
         #test model on dataset
         elif choice==2:
-            print("Chose to test the model on a dataset")
-            pass
+            self.test_model()
 
         #Run model on live packets
         elif choice==3:
@@ -58,17 +67,25 @@ class Main():
     def train_model(self):
         pass
 
+
+
     #menu choice to test a model
     def test_model(self):
 
-        print("Datasets: ")
-        print("1) ...")
-        pass
+        self.data_handler.print_dataset_list()
+        
+        choice = int(input("Dataset choice: "))
+
+        print("Choice: "+str(self.data_handler.get_dataset_path(choice)))
+
+
+        self.DDoS_detector.test(choice)
+
 
 
     #menu choice to run the model on live packets
     def run_model(self):
-        
+        pass
 
 
 
