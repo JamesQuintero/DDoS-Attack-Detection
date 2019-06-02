@@ -1,0 +1,17 @@
+https://ant.isi.edu/datasets/all.html
+*) DARPA_2009_DDoS_attack-20091105	- 1.01GB
+*) DARPA_2009_malware-DDoS_attack-20091104 	- 0.34GB
+*) DARPA_Scalable_Network_Monitoring-20091103 	- 1320GB
+*) DoS_80-20110715				- 32.3GB
+*) DoS_80_timeseries-20020629	 		- 0.783GB
+*) DoS_DNS_amplification-20130617	 	- 1.22GB
+*) DoS_traces-20020629				- 4.13GB
+*) FRGP_SSDP_Reflection_DDoS_Attack_Traffic-20140930	- 5GB?
+
+
+
+Dataset generator: 
+https://github.com/GaloisInc/ddosflowgen
+
+
+https://www.unb.ca/cic/datasets/dos-dataset.html

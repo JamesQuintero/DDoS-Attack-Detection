@@ -1,0 +1,3 @@
+The names of the datasets in ./Datasets are the folder names. Correspondingly, the labels associated with those pcap files are in folders with the same name, but in ./Labels. 
+
+The initial file containing the labels and packet information is the same name, but a regular .csv file in ./Labels. 

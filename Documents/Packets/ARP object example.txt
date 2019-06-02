@@ -1,0 +1,16 @@
+###[ Ethernet ]###
+  dst       = 00:e0:b1:87:f5:94
+  src       = 00:0d:60:96:ac:f7
+  type      = 0x806
+###[ ARP ]###
+     hwtype    = 0x1
+     ptype     = 0x800
+     hwlen     = 6
+     plen      = 4
+     op        = is-at
+     hwsrc     = 00:0d:60:96:ac:f7
+     psrc      = 192.168.3.115
+     hwdst     = 00:e0:b1:87:f5:94
+     pdst      = 192.168.3.1
+###[ Padding ]###
+        load      = '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
