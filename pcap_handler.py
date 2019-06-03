@@ -1,7 +1,7 @@
 ## James Quintero
 ## https://github.com/JamesQuintero
 ## Created: 5/2019
-## Modified: 5/2019
+## Modified: 6/2019
 ##
 ## Reads PCAP files containing network packets
 
@@ -22,6 +22,9 @@ class PCAPHandler:
 	#maps int IP packet type identifier to its string version
 	IP_type = {}
 
+	#dictionary where key are packet sections, and values are lists of strings that are keys for those packet sections
+	supported_keys = {}
+
 	def __init__(self):
 		
 
@@ -33,12 +36,55 @@ class PCAPHandler:
 		self.pkt_type[34525] = "IPv6"
 		self.pkt_type[35020] = "LLDP"
 
+		#https://en.wikipedia.org/wiki/List_of_IP_protocol_numbers
 		self.IP_type[0] = "Hop-by-Hop Option Header"
 		self.IP_type[1] = "ICMP"
 		self.IP_type[2] = "ROUTER"
 		self.IP_type[6] = "TCP"
 		self.IP_type[17] = "UDP"
 		self.IP_type[58] = "ICMPv6"
+
+
+
+
+
+		## If you change this section, then the order of input values for the neural network will also change ##
+		#overall packet information
+		ethernet_keys = ["overall_type", "source", "destination", "timestamp"]
+		#Ethernet information
+		IP_keys = ["packet_type", "length", "checksum", "source", "destination"]
+		IPv6_keys = ["packet_type", "traffic_class", "payload_length", "next_header", "hop_limit", "source", "destination"]
+		ARP_keys = ["length", "operation", "hardware_source", "protocol_source", "hardware_destination", "protocol_destination"]
+		LLDP_keys = []
+		#IP information
+		UDP_keys = ["udp_len", "udp_checksum", "source_port", "destination_port"]
+		# TCP_keys = ["tcp_checksum", "source_port", "destination_port", "ack", "flags", "tcp_options"]
+		TCP_keys = ["tcp_checksum", "source_port", "destination_port", "ack", "flags"]
+		ICMP_keys = ["icmp_type", "icmp_checksum"]
+		#IPv6 information
+		hop_by_hop_keys = []
+		ICMPv6_keys = ["icmp_type", "icmp_checksum", "target"]
+		#UDP information
+		NTP_keys = ["leap", "mode", "stratum", "dispersion", "id"]
+
+
+		self.supported_keys = {}
+		#overall packet type
+		self.supported_keys['ethernet_keys'] = ethernet_keys
+		#Ethernet type
+		self.supported_keys['IP_keys'] = IP_keys
+		self.supported_keys['IPv6_keys'] = IPv6_keys
+		self.supported_keys['ARP_keys'] = ARP_keys
+		self.supported_keys['LLDP_keys'] = LLDP_keys
+		#IP section
+		self.supported_keys['UDP_keys'] = UDP_keys
+		self.supported_keys['TCP_keys'] = TCP_keys
+		self.supported_keys['ICMP_keys'] = ICMP_keys
+		#IPv6 section
+		self.supported_keys['hop_by_hop_keys'] = hop_by_hop_keys
+		self.supported_keys['ICMPv6_keys'] = ICMPv6_keys
+		#UDP section
+		self.supported_keys['NTP_keys'] = NTP_keys
 
 
 
@@ -246,6 +292,137 @@ class PCAPHandler:
 
 
 
+	#compresses a dictionary packet into a list packet
+	def compress_packet(self, packet):
+
+
+		# supported_keys = []
+		# #overall packet type
+		# supported_keys.extend(ethernet_keys)
+		# #Ethernet type
+		# supported_keys.extend(IP_keys)
+		# supported_keys.extend(IPv6_keys)
+		# supported_keys.extend(ARP_keys)
+		# supported_keys.extend(LLDP_keys)
+		# #IP section
+		# supported_keys.extend(UDP_keys)
+		# supported_keys.extend(TCP_keys)
+		# supported_keys.extend(ICMP_keys)
+		# #IPv6 section
+		# supported_keys.extend(hop_by_hop_keys)
+		# supported_keys.extend(ICMPv6_keys)
+		# #UDP section
+		# supported_keys.extend(NTP_keys)
+
+
+		
+
+
+		packet_list = []
+		#gets Ethernet keys if they exist
+		try:
+			to_extend = []
+			for x in range(0, len(self.supported_keys['ethernet_keys'])):
+				to_extend.append(packet['Ethernet'][self.supported_keys['ethernet_keys'][x]])
+		except:
+			to_extend = [0]*len(self.supported_keys['ethernet_keys'])
+		packet_list.extend(to_extend)
+
+
+		#gets IP keys if they exist
+		try:
+			to_extend = []
+			for x in range(0, len(self.supported_keys['IP_keys'])):
+				to_extend.append(packet['IP'][self.supported_keys['IP_keys'][x]])
+		except:
+			to_extend = [0]*len(self.supported_keys['IP_keys'])
+		packet_list.extend(to_extend)
+
+		#gets IPv6 keys if they exist
+		try:
+			to_extend = []
+			for x in range(0, len(self.supported_keys['IPv6_keys'])):
+				to_extend.append(packet['IPv6'][self.supported_keys['IPv6_keys'][x]])
+		except:
+			to_extend = [0]*len(self.supported_keys['IPv6_keys'])
+		packet_list.extend(to_extend)
+
+		#gets ARP keys if they exist
+		try:
+			to_extend = []
+			for x in range(0, len(self.supported_keys['ARP_keys'])):
+				to_extend.append(packet['ARP'][self.supported_keys['ARP_keys'][x]])
+		except:
+			to_extend = [0]*len(self.supported_keys['ARP_keys'])
+		packet_list.extend(to_extend)
+
+		#gets LLDP keys if they exist
+		try:
+			to_extend = []
+			for x in range(0, len(self.supported_keys['LLDP_keys'])):
+				to_extend.append(packet['LLDP'][self.supported_keys['LLDP_keys'][x]])
+		except:
+			to_extend = [0]*len(self.supported_keys['LLDP_keys'])
+		packet_list.extend(to_extend)
+
+		#gets UDP keys if they exist
+		try:
+			to_extend = []
+			for x in range(0, len(self.supported_keys['UDP_keys'])):
+				to_extend.append(packet['packet_info'][self.supported_keys['UDP_keys'][x]])
+		except:
+			to_extend = [0]*len(self.supported_keys['UDP_keys'])
+		packet_list.extend(to_extend)
+
+		#gets TCP keys if they exist
+		try:
+			to_extend = []
+			for x in range(0, len(self.supported_keys['TCP_keys'])):
+				to_extend.append(packet['packet_info'][self.supported_keys['TCP_keys'][x]])
+		except:
+			to_extend = [0]*len(self.supported_keys['TCP_keys'])
+		packet_list.extend(to_extend)
+
+		#gets ICMP keys if they exist
+		try:
+			to_extend = []
+			for x in range(0, len(self.supported_keys['ICMP_keys'])):
+				to_extend.append(packet['packet_info'][self.supported_keys['ICMP_keys'][x]])
+		except:
+			to_extend = [0]*len(self.supported_keys['ICMP_keys'])
+		packet_list.extend(to_extend)
+
+		#gets IPv6 section keys if they exist
+		try:
+			to_extend = []
+			for x in range(0, len(self.supported_keys['hop_by_hop_keys'])):
+				to_extend.append(packet['packet_info'][self.supported_keys['hop_by_hop_keys'][x]])
+		except:
+			to_extend = [0]*len(self.supported_keys['hop_by_hop_keys'])
+		packet_list.extend(to_extend)
+
+		#gets IPv6 section keys if they exist
+		try:
+			to_extend = []
+			for x in range(0, len(self.supported_keys['ICMPv6_keys'])):
+				to_extend.append(packet['packet_info'][self.supported_keys['ICMPv6_keys'][x]])
+		except:
+			to_extend = [0]*len(self.supported_keys['ICMPv6_keys'])
+		packet_list.extend(to_extend)
+
+		#gets UDP section keys if they exist
+		try:
+			to_extend = []
+			for x in range(0, len(self.supported_keys['NTP_keys'])):
+				to_extend.append(packet['packet_info']['NTP'][self.supported_keys['NTP_keys'][x]])
+		except:
+			to_extend = [0]*len(self.supported_keys['NTP_keys'])
+		packet_list.extend(to_extend)
+
+
+
+		return packet_list
+
 
 
 	#returns values from the Ethernet section of the packet
@@ -344,7 +521,7 @@ class PCAPHandler:
 		# packet_info['IPv6']['version'] = 
 		# packet_info['IPv6']['version'] = 
 
-		#if packet is of type TCP
+		#if packet is of type Hop-by-Hop Option Header
 		if IPv6_packet_type=="Hop-by-Hop Option Header": 
 			pass
 

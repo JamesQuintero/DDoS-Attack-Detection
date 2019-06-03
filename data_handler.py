@@ -1,7 +1,7 @@
 ## James Quintero
 ## https://github.com/JamesQuintero
 ## Created: 5/2019
-## Modified: 5/2019
+## Modified: 6/2019
 ##
 ## Handles all the data required for the program
 
@@ -141,15 +141,57 @@ class DataHandler:
 
 
 
+	#turns each packet data from dictionaries into a flat 1d list. 
+	def compress_packets(self, packets):
+		print("compress_packets()")
+
+		new_packets = []
+		for x in range(0, len(packets)):
+
+			packet = packets[x]
+
+			# self.print_packet(packet)
+
+			compressed_packet = self.pcap_handler.compress_packet(packet)
+
+			# print()
+			# print("Compressed packet: ")
+			# for y in range(0, len(compressed_packet)):
+			# 	print(str(y)+": "+str(compressed_packet[y]))
+			# print()
+
+			
+			new_packets.append(compressed_packet)
+
+		return new_packets
+
+
+	#param is a 2D list of packet data, and returned value is a 2D list of the same data, but normalized. 
+	def normalize_compressed_packets(self, compressed_packets):
+		# pass
+		return compressed_packets
 
 
 
 
 
 
-	#loads labels corresponding to dataset
-	def get_labels(self, dataset_index):
-		pass
+
+
+
+
+
+	#loads labels corresponding to dataset and specific pcap file
+	#if pcap_index is None, then return labels for all pcap files corresponding to the dataset index
+	def get_labels(self, dataset_index, pcap_index=None):
+		label_path = self.get_label_path(dataset_index, pcap_index)
+
+		print("Label path: "+str(label_path))
+
+		labels = self.read_from_csv(label_path)
+
+
+		return labels
 
 
 	#iterates through all pcaps in the specified dataset, and calculates the corresponding labels.
@@ -486,14 +528,17 @@ class DataHandler:
 			elif len(packet['ARP'])>0:
 				print()
 				print("  ARP: ")
-				print("    Operation: "+str(packet_info['ARP']['operation']))
-				print("    Hardware Source: "+str(packet_info['ARP']['hardware_source']))
-				print("    HardwareDestination: "+str(packet_info['ARP']['hardware_destination']))
-				print("    Protocol Source: "+str(packet_info['ARP']['protocol_source']))
-				print("    Protocol Destination: "+str(packet_info['ARP']['protocol_destination']))
-				print("    Length: "+str(packet_info['ARP']['length']))
+				print("    Operation: "+str(packet['ARP']['operation']))
+				print("    Hardware Source: "+str(packet['ARP']['hardware_source']))
+				print("    HardwareDestination: "+str(packet['ARP']['hardware_destination']))
+				print("    Protocol Source: "+str(packet['ARP']['protocol_source']))
+				print("    Protocol Destination: "+str(packet['ARP']['protocol_destination']))
+				print("    Length: "+str(packet['ARP']['length']))
 
 
+		else:
+			# print("")
+			pass
 
 
 
@@ -553,6 +598,21 @@ class DataHandler:
 
 		pcap_filename = self.pcap_files[dataset_index][pcap_index]
 		return pcap_filename
+
+	#returns the full path of the label csv file corresponding to dataset_index and pcap_index
+	def get_label_path(self, dataset_index, pcap_index):
+		dataset_name = self.get_dataset_filename(dataset_index)
+		pcap_name = self.get_pcap_filename(dataset_index, pcap_index)
+
+		#if couldn't get dataset name
+		if dataset_name=="":
+			return ""
+
+		#if couldn't get the filename
+		if pcap_name=="":
+			return ""
+
+		return self.label_path+"/"+str(dataset_name)+"/"+str(pcap_name)+".csv"
 
 
 
