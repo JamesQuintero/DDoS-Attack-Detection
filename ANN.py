@@ -87,7 +87,7 @@ class ANN:
 			model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 			# Fitting the ANN to the Training set
 			print("Training neural network")
-			model.fit(X_train, y_train, batch_size = 5, epochs = 50)
+			model.fit(X_train, y_train, batch_size = 20, epochs = 10)
 
 			#saves the model for future use
 			model.save(model_path)

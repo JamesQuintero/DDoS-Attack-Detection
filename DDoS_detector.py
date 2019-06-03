@@ -81,13 +81,13 @@ class DDoSDetector:
 		compressed_packets = self.data_handler.compress_packets(packets)
 
 
-		print("First 5 compressed packets: ")
-		for x in range(0, 5):
-			print(str(x))
-			for y in range(0, len(compressed_packets[x])):
-				print(str(y)+": "+str(compressed_packets[x][y]))
-			print()
-		print()
+		# print("First 5 compressed packets: ")
+		# for x in range(0, 5):
+		# 	print(str(x))
+		# 	for y in range(0, len(compressed_packets[x])):
+		# 		print(str(y)+": "+str(compressed_packets[x][y]))
+		# 	print()
+		# print()
 
 
 		input_data = self.data_handler.generate_input_data(compressed_packets)
@@ -100,28 +100,17 @@ class DDoSDetector:
 
 
 
-		input_scalar, output_scalar, normalized_input, normalized_output = self.data_handler.normalize_compressed_packets(input_data, labels)
-
-		# for x in range(0, len(packets)):
-		# 	self.data_handler.print_packet(packets[x])
-		# 	input()
-
-		print("First 5 compressed normalized packets: ")
-		for x in range(0, 5):
-			print(str(x))
-			for y in range(0, len(normalized_input[x])):
-				print(str(y)+": "+str(normalized_input[x][y]))
-			print()
-		print()
+		normalized_input, normalized_output = self.data_handler.normalize_compressed_packets(input_data, labels)
 
 
-		print("First 5 normalized output: ")
-		for x in range(0, 5):
-			# print(str(x))
-			# for y in range(0, len(normalized_output[x])):
-			print(str(x)+": "+str(normalized_output[x]))
-			# print()
-		print()
+		# print("First 5 compressed normalized packets: ")
+		# for x in range(0, 5):
+		# 	print(str(x))
+		# 	for y in range(0, len(normalized_input[x])):
+		# 		print(str(y)+": "+str(normalized_input[x][y]))
+		# 	print()
+		# print()
+
 
 		# print("Labels: ")
 		# for x in range(0, len(labels)):

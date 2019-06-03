@@ -20,6 +20,7 @@ import datetime
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.externals import joblib
 
 from pcap_handler import PCAPHandler #for reading pcap files
 
@@ -117,7 +118,7 @@ class DataHandler:
 		else:
 
 			pcap_paths = []
-			for x in range(0, len(self.pcap_files)):
+			for x in range(0, len(self.pcap_files[dataset_index])):
 				pcap_paths.append(self.get_pcap_path(dataset_index, x))
 
 
@@ -189,6 +190,21 @@ class DataHandler:
 		IP_type = {}
 
 
+
+
+
+		#counts the number of occurrences of value in lookback_amount at lookback_index
+		def count_occurrences(value, cur_index, lookback_amount, lookback_column):
+
+			num = 0
+			for x in range(cur_index, max(cur_index-lookback_amount, -1), -1):
+				if compressed_packets[x][lookback_column]==value:
+					num+=1
+			return num
+
+
+
+
 		to_return = []
 		for x in range(0, len(compressed_packets)):
 			row = []
@@ -200,51 +216,94 @@ class DataHandler:
 			IP_source = compressed_packets[x][7]
 			IP_destination = compressed_packets[x][8]
 
-			#if not logged this source address yet, then add it
-			if ethernet_source not in ethernet_source_addresses.keys():
-				ethernet_source_addresses[ethernet_source] = 1
-			else:
-				ethernet_source_addresses[ethernet_source] += 1
+			# #if not logged this source address yet, then add it
+			# if ethernet_source not in ethernet_source_addresses.keys():
+			# 	ethernet_source_addresses[ethernet_source] = 1
+			# else:
+			# 	ethernet_source_addresses[ethernet_source] += 1
 
-			#if not logged this source address yet, then add it
-			if ethernet_destination not in ethernet_destination_addresses.keys():
-				ethernet_destination_addresses[ethernet_destination] = 1
-			else:
-				ethernet_destination_addresses[ethernet_destination] += 1
+			# #if not logged this source address yet, then add it
+			# if ethernet_destination not in ethernet_destination_addresses.keys():
+			# 	ethernet_destination_addresses[ethernet_destination] = 1
+			# else:
+			# 	ethernet_destination_addresses[ethernet_destination] += 1
 
-			ethernet_difference = ethernet_source_addresses[ethernet_source] - ethernet_destination_addresses[ethernet_destination]
-
-
-			#if not logged this source address yet, then add it
-			if IP_source not in IP_source_addresses.keys():
-				IP_source_addresses[IP_source] = 1
-			else:
-				IP_source_addresses[IP_source] += 1
-
-			#if not logged this source address yet, then add it
-			if IP_destination not in IP_destination_addresses.keys():
-				IP_destination_addresses[IP_destination] = 1
-			else:
-				IP_destination_addresses[IP_destination] += 1
-
-			IP_difference = IP_source_addresses[IP_source] - IP_destination_addresses[IP_destination]
+			# ethernet_difference = ethernet_source_addresses[ethernet_source] - ethernet_destination_addresses[ethernet_destination]
 
 
+			# #if not logged this source address yet, then add it
+			# if IP_source not in IP_source_addresses.keys():
+			# 	IP_source_addresses[IP_source] = 1
+			# else:
+			# 	IP_source_addresses[IP_source] += 1
+
+			# #if not logged this source address yet, then add it
+			# if IP_destination not in IP_destination_addresses.keys():
+			# 	IP_destination_addresses[IP_destination] = 1
+			# else:
+			# 	IP_destination_addresses[IP_destination] += 1
+
+			# IP_difference = IP_source_addresses[IP_source] - IP_destination_addresses[IP_destination]
+
+			# row.append(ethernet_source_addresses[ethernet_source])
+			# row.append(ethernet_destination_addresses[ethernet_destination])
+			# row.append(ethernet_difference)
+			# row.append(IP_source_addresses[IP_source])
+			# row.append(IP_destination_addresses[IP_destination])
+			# row.append(IP_difference)
 
 
-			row.append(ethernet_source_addresses[ethernet_source])
-			row.append(ethernet_destination_addresses[ethernet_destination])
-			row.append(ethernet_difference)
-			row.append(IP_source_addresses[IP_source])
-			row.append(IP_destination_addresses[IP_destination])
-			row.append(IP_difference)
+
+
+			lookback_amount = 100
+			ethernet_source_occurrences = count_occurrences(value=ethernet_source, cur_index=x, lookback_amount=lookback_amount, lookback_column=1)
+			ethernet_destination_occurrences = count_occurrences(value=ethernet_destination, cur_index=x, lookback_amount=lookback_amount, lookback_column=2)
+			IP_source_occurrences = count_occurrences(value=IP_source, cur_index=x, lookback_amount=lookback_amount, lookback_column=7)
+			IP_destination_occurrences = count_occurrences(value=IP_destination, cur_index=x, lookback_amount=lookback_amount, lookback_column=8)
+
+			row.append(ethernet_source_occurrences)
+			row.append(ethernet_destination_occurrences)
+			row.append(IP_source_occurrences)
+			row.append(IP_destination_occurrences)
+
+
+
+
+			lookback_amount = 1000
+			ethernet_source_occurrences = count_occurrences(value=ethernet_source, cur_index=x, lookback_amount=lookback_amount, lookback_column=1)
+			ethernet_destination_occurrences = count_occurrences(value=ethernet_destination, cur_index=x, lookback_amount=lookback_amount, lookback_column=2)
+			IP_source_occurrences = count_occurrences(value=IP_source, cur_index=x, lookback_amount=lookback_amount, lookback_column=7)
+			IP_destination_occurrences = count_occurrences(value=IP_destination, cur_index=x, lookback_amount=lookback_amount, lookback_column=8)
+
+			row.append(ethernet_source_occurrences)
+			row.append(ethernet_destination_occurrences)
+			row.append(IP_source_occurrences)
+			row.append(IP_destination_occurrences)
+
+
+
+
+
+
+
+
+			
 
 
 			timestamp = compressed_packets[x][3]
-			prev_timestamp = compressed_packets[max(0, x-1)][3]
-			timestamp_difference = timestamp-prev_timestamp
+			prev_timestamp1 = compressed_packets[max(0, x-1)][3]
+			prev_timestamp10 = compressed_packets[max(0, x-10)][3]
+			prev_timestamp100 = compressed_packets[max(0, x-100)][3]
+			prev_timestamp1000 = compressed_packets[max(0, x-1000)][3]
+			timestamp_difference1 = timestamp-prev_timestamp1
+			timestamp_difference10 = timestamp-prev_timestamp10
+			timestamp_difference100 = timestamp-prev_timestamp100
+			timestamp_difference1000 = timestamp-prev_timestamp1000
 
-			row.append(timestamp_difference)
+			row.append(timestamp_difference1)
+			row.append(timestamp_difference10)
+			row.append(timestamp_difference100)
+			row.append(timestamp_difference1000)
 
 
 
@@ -272,47 +331,39 @@ class DataHandler:
 
 	#param is a 2D list of packet data, and returned value is a 2D list of the same data, but normalized. 
 	def normalize_compressed_packets(self, compressed_packets, labels):
-
-
-		### Normalizes the data ###
-
 		unnormalized_input_data = compressed_packets.copy()
 		unnormalized_output_data = labels.copy()
 		input_data = compressed_packets
 		output_data = labels
 
-		print("First 5 input data: ")
-		print(input_data[:5])
 
 
-		# packet_type_label_encoder = LabelEncoder()
-		# IP_type_label_encoder = LabelEncoder()
+		#saves normalization params
+		input_scaler_filename = "./Models/input_normalization_params.saver"
+
+		#if have a saved normalization file, then use it
+		if os.path.isfile(input_scaler_filename):
+			print("Loaded scaler object file")
+			input_scaler = joblib.load(input_scaler_filename)
+			input_data = input_scaler.transform(input_data)
+		#normalize the data
+		else:
+			input_scaler = StandardScaler()
+
+			try:
+				input_data = input_scaler.fit_transform(input_data)
+				input_data = np.array(input_data).tolist()
+			except Exception as error:
+				print(error)
+
+			#saves normalization params for future use
+			joblib.dump(input_scaler, input_scaler_filename)
 
 
-		input_scaler = StandardScaler()
-		output_scaler = StandardScaler()
-		# input_scaler = MinMaxScaler(feature_range=(-1,1))
-		# output_scaler = MinMaxScaler(feature_range=(-1,1))
-		# input_scaler = MinMaxScaler(feature_range=(0,1))
-		# output_scaler = MinMaxScaler(feature_range=(0,1))
-
-		#this is for LSTM networks since range of -1 to 1 is best
-		# scaler = MinMaxScaler(feature_range=(-1,1))
-		# scaler = MinMaxScaler(feature_range=(0,1))
-		print("  Normalizing...")
-		try:
-			input_data = input_scaler.fit_transform(input_data)
-			input_data = np.array(input_data).tolist()
-			# output_data = output_scaler.fit_transform(output_data)
-			# output_data = np.array(output_data).tolist()
-		except Exception as error:
-			print(error)
 
 
 		output_data = []
 		for x in range(0, len(labels)):
-			# print(labels[x])
-			# input()
 			if labels[x][1]=="BENIGN":
 				output_data.append(0)
 			else:
@@ -321,7 +372,7 @@ class DataHandler:
 
 
 
-		return input_scaler, output_scaler, input_data, output_data
+		return input_data, output_data
 
 
 
@@ -350,7 +401,7 @@ class DataHandler:
 			print("got here")
 
 			labels = []
-			for x in range(0, len(self.pcap_files)):
+			for x in range(0, len(self.pcap_files[dataset_index])):
 				label_path = self.get_label_path(dataset_index, x)
 				print("Label path: "+str(label_path))
 
