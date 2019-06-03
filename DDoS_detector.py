@@ -28,10 +28,14 @@ class DDoSDetector:
 
 	def train(self, dataset_index, pcap_index=None):
 		print("Dataset: "+str(self.data_handler.get_dataset_path(dataset_index)))
-		print("PCAP: "+str(self.data_handler.get_pcap_path(dataset_index, pcap_index)))
+		if pcap_index!=None:
+			print("PCAP: "+str(self.data_handler.get_pcap_path(dataset_index, pcap_index)))
 
 		packets = self.data_handler.get_packet_information(dataset_index, pcap_index)
 		labels = self.data_handler.get_labels(dataset_index, pcap_index)
+
+		# print("Num pcaps: "+str(len(packets)))
+		# print("Num packets: "+str(len(packets[0])))
 
 
 		#turns each packet data from dictionaries into a flat 1d list. 

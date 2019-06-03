@@ -331,11 +331,30 @@ class DataHandler:
 	#loads labels corresponding to dataset and specific pcap file
 	#if pcap_index is None, then return labels for all pcap files corresponding to the dataset index
 	def get_labels(self, dataset_index, pcap_index=None):
-		label_path = self.get_label_path(dataset_index, pcap_index)
+		labels = []
 
-		print("Label path: "+str(label_path))
+		#if getting labels for a specific pcap file
+		if pcap_index!=None:
+			print("pcap_index!=None")
+			label_path = self.get_label_path(dataset_index, pcap_index)
+			print("Label path: "+str(label_path))
 
-		labels = self.read_from_csv(label_path)
+			labels = self.read_from_csv(label_path)
+		#if retrieving labels for all pcap files belonging to dataset_index
+		else:
+			print("got here")
+
+			labels = []
+			for x in range(0, len(self.pcap_files)):
+				label_path = self.get_label_path(dataset_index, x)
+				print("Label path: "+str(label_path))
+
+				temp_labels = self.read_from_csv(label_path)
+
+				labels.append(temp_labels)
+
+
+		
 
 
 		return labels
