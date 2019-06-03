@@ -16,6 +16,11 @@ from os.path import isfile, join
 import time
 import datetime
 
+
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
+
 from pcap_handler import PCAPHandler #for reading pcap files
 
 
@@ -166,10 +171,152 @@ class DataHandler:
 		return new_packets
 
 
+	#returns actual neural network input data generated from compressed packet data
+	#this neural network data includes frequency of IP addresses, packet types, etc. 
+	def generate_input_data(self, compressed_packets):
+
+		ethernet_source_addresses = {}
+		ethernet_destination_addresses = {}
+
+		IP_source_addresses = {}
+		IP_destination_addresses = {}
+
+		IP_type = {}
+
+
+		to_return = []
+		for x in range(0, len(compressed_packets)):
+			row = []
+
+			# self.print_compressed_packet(compressed_packets[x])
+
+			ethernet_source = compressed_packets[x][1]
+			ethernet_destination = compressed_packets[x][2]
+			IP_source = compressed_packets[x][7]
+			IP_destination = compressed_packets[x][8]
+
+			#if not logged this source address yet, then add it
+			if ethernet_source not in ethernet_source_addresses.keys():
+				ethernet_source_addresses[ethernet_source] = 1
+			else:
+				ethernet_source_addresses[ethernet_source] += 1
+
+			#if not logged this source address yet, then add it
+			if ethernet_destination not in ethernet_destination_addresses.keys():
+				ethernet_destination_addresses[ethernet_destination] = 1
+			else:
+				ethernet_destination_addresses[ethernet_destination] += 1
+
+			ethernet_difference = ethernet_source_addresses[ethernet_source] - ethernet_destination_addresses[ethernet_destination]
+
+
+			#if not logged this source address yet, then add it
+			if IP_source not in IP_source_addresses.keys():
+				IP_source_addresses[IP_source] = 1
+			else:
+				IP_source_addresses[IP_source] += 1
+
+			#if not logged this source address yet, then add it
+			if IP_destination not in IP_destination_addresses.keys():
+				IP_destination_addresses[IP_destination] = 1
+			else:
+				IP_destination_addresses[IP_destination] += 1
+
+			IP_difference = IP_source_addresses[IP_source] - IP_destination_addresses[IP_destination]
+
+
+
+
+			row.append(ethernet_source_addresses[ethernet_source])
+			row.append(ethernet_destination_addresses[ethernet_destination])
+			row.append(ethernet_difference)
+			row.append(IP_source_addresses[IP_source])
+			row.append(IP_destination_addresses[IP_destination])
+			row.append(IP_difference)
+
+
+			timestamp = compressed_packets[x][3]
+			prev_timestamp = compressed_packets[max(0, x-1)][3]
+			timestamp_difference = timestamp-prev_timestamp
+
+			row.append(timestamp_difference)
+
+
+
+
+
+
+			# print()
+			# print(row)
+			# print()
+
+
+			to_return.append(row)
+
+			# input()
+
+
+
+
+		return to_return
+
+
+
+
+
+
 	#param is a 2D list of packet data, and returned value is a 2D list of the same data, but normalized. 
-	def normalize_compressed_packets(self, compressed_packets):
-		# pass
-		return compressed_packets
+	def normalize_compressed_packets(self, compressed_packets, labels):
+
+
+		### Normalizes the data ###
+
+		unnormalized_input_data = compressed_packets.copy()
+		unnormalized_output_data = labels.copy()
+		input_data = compressed_packets
+		output_data = labels
+
+		print("First 5 input data: ")
+		print(input_data[:5])
+
+
+		# packet_type_label_encoder = LabelEncoder()
+		# IP_type_label_encoder = LabelEncoder()
+
+
+		input_scaler = StandardScaler()
+		output_scaler = StandardScaler()
+		# input_scaler = MinMaxScaler(feature_range=(-1,1))
+		# output_scaler = MinMaxScaler(feature_range=(-1,1))
+		# input_scaler = MinMaxScaler(feature_range=(0,1))
+		# output_scaler = MinMaxScaler(feature_range=(0,1))
+
+		#this is for LSTM networks since range of -1 to 1 is best
+		# scaler = MinMaxScaler(feature_range=(-1,1))
+		# scaler = MinMaxScaler(feature_range=(0,1))
+		print("  Normalizing...")
+		try:
+			input_data = input_scaler.fit_transform(input_data)
+			input_data = np.array(input_data).tolist()
+			# output_data = output_scaler.fit_transform(output_data)
+			# output_data = np.array(output_data).tolist()
+		except Exception as error:
+			print(error)
+
+
+		output_data = []
+		for x in range(0, len(labels)):
+			# print(labels[x])
+			# input()
+			if labels[x][1]=="BENIGN":
+				output_data.append(0)
+			else:
+				output_data.append(1)
+
+
+
+
+		return input_scaler, output_scaler, input_data, output_data
 
 
 
@@ -544,6 +691,12 @@ class DataHandler:
 
 		print("Load: "+str(packet['load']))
 		print()
+
+
+
+	def print_compressed_packet(self, compressed_packet):
+		for x in range(0, len(compressed_packet)):
+			print(str(x)+": "+str(compressed_packet[x]))
 
 
 	#returns the full path to the provided dataset index

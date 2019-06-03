@@ -29,13 +29,11 @@ class ANN:
 			print(str(x)+": "+str(input_data[x]))
 		print()
 
-		print("Output: ")
-		for x in range(0, len(output_data)):
-			print(str(x)+": "+str(output_data[x]))
-		print()
+		# print("Output: ")
+		# for x in range(0, len(output_data)):
+		# 	print(str(x)+": "+str(output_data[x]))
+		# print()
 
-
-		pass
 
 
 

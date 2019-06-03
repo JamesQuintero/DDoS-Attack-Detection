@@ -1,16 +1,28 @@
 
 
-*) Import Kamene library for reading pcap files. 
+*) Install Kamene library for reading pcap files. 
 - pip3 install kamene
 
 or 
 
-- py -3.x -m install kamene
+- py -3.x -m pip install kamene
+
+*) Install scikit-learn
+
+- pip3 install scikit-learn
+
+or
+
+- py -3.x -m pip install scikit-learn
+
+If an error comes back that python doesn't have module "install", then download get-pip.py, and install pip for the version of python you're using. 
+
+- sudo py -3.x get-pip.py
 
 3.x is the version of python you wish to run this program under. 
 
 *) Run
-Windows: py -3 DDOS_Detector.py
+My desktop: py -3.3 DDOS_Detector.py
 My laptop: py -3.5 DDOS_Detector.py
 
 Unix: python3 DDOS_Detector.py
