@@ -134,12 +134,13 @@ class DataHandler:
 				print()
 				# input()
 
-				pcap_information.append(data)
+				pcap_information.extend(data)
 
 
-			total_packets = 0
-			for x in range(0, len(pcap_information)):
-				total_packets += len(pcap_information[x])
+			# total_packets = 0
+			# for x in range(0, len(pcap_information)):
+			# 	total_packets += len(pcap_information[x])
+			total_packets = len(pcap_information)
 			print("Total number of packets: "+str(total_packets))
 
 			return pcap_information
@@ -169,6 +170,10 @@ class DataHandler:
 			new_packets.append(compressed_packet)
 
 		return new_packets
+
+	#turns 2d list of labels into 1d long list of labels
+	def compress_labels(self, labels):
+		return labels
 
 
 	#returns actual neural network input data generated from compressed packet data
@@ -351,7 +356,7 @@ class DataHandler:
 
 				temp_labels = self.read_from_csv(label_path)
 
-				labels.append(temp_labels)
+				labels.extend(temp_labels)
 
 
 		
@@ -711,6 +716,15 @@ class DataHandler:
 		print("Load: "+str(packet['load']))
 		print()
 
+
+	#returns number of pcaps associated with the specified dataset_index
+	def get_num_pcaps(self, dataset_index):
+		#if invalid dataset_index
+		if dataset_index<0 or dataset_index>=len(self.datasets):
+			print("Invalid dataset_index: "+str(dataset_index))
+			return 0
+
+		return len(self.pcap_files[dataset_index])
 
 
 	def print_compressed_packet(self, compressed_packet):

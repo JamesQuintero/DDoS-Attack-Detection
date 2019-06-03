@@ -31,12 +31,51 @@ class DDoSDetector:
 		if pcap_index!=None:
 			print("PCAP: "+str(self.data_handler.get_pcap_path(dataset_index, pcap_index)))
 
+		packets = []
+		labels = []
+
+		# #if getting all pcap files for specified dataset_index
+		# if pcap_index==None:
+		# 	num_pcaps = self.data_handler.get_num_pcaps(dataset_index)
+
+		# 	packets = []
+		# 	for x in range(0, num_pcaps):
+		# 		pcap_contents = self.data_handler.get_packet_information(dataset_index, x)
+		# 		packets.append(pcap_contents)
+
+		# 	labels = []
+		# 	for x in range(0, num_pcaps):
+		# 		pcap_labels = self.data_handler.get_labels(dataset_index, x)
+		# 		labels.append(pcap_labels)
+
+
+		# 	#turns each packet data from dictionaries into a flat 1d list. 
+		# 	compressed_packets = self.data_handler.compress_packets(packets)
+
+		# 	#turns 2d list of labels into 1d list
+		# 	compressed_labels = self.data_handler.compress_labels(labels)
+
+
+		# #if getting a specific pcap file
+		# else:
+		# 	packets = self.data_handler.get_packet_information(dataset_index, pcap_index)
+		# 	labels = self.data_handler.get_labels(dataset_index, pcap_index)
+
+		# 	#turns each packet data from dictionaries into a flat 1d list. 
+		# 	compressed_packets = self.data_handler.compress_packets([packets])
+
+		# 	#turns 2d list of labels into 1d list
+		# 	compressed_labels = self.data_handler.compress_labels([labels])
+
+		# 	# print("Num pcaps: "+str(len(packets)))
+		# 	# print("Num packets: "+str(len(packets[0])))
+
+
+		
+
+
 		packets = self.data_handler.get_packet_information(dataset_index, pcap_index)
 		labels = self.data_handler.get_labels(dataset_index, pcap_index)
-
-		# print("Num pcaps: "+str(len(packets)))
-		# print("Num packets: "+str(len(packets[0])))
-
 
 		#turns each packet data from dictionaries into a flat 1d list. 
 		compressed_packets = self.data_handler.compress_packets(packets)
@@ -110,6 +149,6 @@ if __name__=="__main__":
 	DDoS_detector = DDoSDetector()
 
 
-	DDoS_detector.train(1, 0)
+	DDoS_detector.train(1, None)
 
 	
