@@ -195,8 +195,8 @@ if __name__=="__main__":
 	DDoS_detector = DDoSDetector()
 
 
-	# DDoS_detector.train(1, None)
+	DDoS_detector.train(dataset_index=1, pcap_index=None)
 
-	DDoS_detector.predict()
+	# DDoS_detector.predict()
 
 	

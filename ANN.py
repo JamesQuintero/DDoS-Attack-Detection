@@ -78,8 +78,9 @@ class ANN:
 			#hidden layer has num_countries/2 nodes
 			model.add(Dense(input_dim = len(X_train[0]), units = int(len(X_train[0])/1), kernel_initializer = 'uniform', activation = 'relu'))
 			model.add(Dropout(rate = 0.2))
+			model.add(Dense(units = int(len(X_train[0])/1), kernel_initializer = 'uniform', activation = 'relu'))
 			# model.add(Dense(units = int(len(X[0])/1), kernel_initializer = 'uniform', activation = 'relu'))
-			# model.add(Dense(units = int(len(X[0])/1), kernel_initializer = 'uniform', activation = 'relu'))
+			model.add(Dropout(rate = 0.2))
 			# Adding the output layer
 			#1 output layer node, since that'll be a percentage
 			model.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
@@ -87,7 +88,7 @@ class ANN:
 			model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 			# Fitting the ANN to the Training set
 			print("Training neural network")
-			model.fit(X_train, y_train, batch_size = 20, epochs = 10)
+			model.fit(X_train, y_train, batch_size = 20, epochs = 20)
 
 			#saves the model for future use
 			model.save(model_path)
