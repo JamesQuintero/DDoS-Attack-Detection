@@ -34,6 +34,7 @@ class DataHandler:
 
 	base_path = "./Datasets/"
 	label_path = "./Labels/"
+	live_sniffing_path = "./Live sniffing"
 
 
 	IP_type = {}
@@ -92,6 +93,25 @@ class DataHandler:
 	# 	print("Total number of packets: "+str(len(pcap_information)))
 
 	# 	return pcap_information
+
+
+	#param is a full path to a live pcap file
+	#returns normalized input data 
+	def get_live_input_data(self, pcap_path):
+		if pcap_path=="":
+			return
+
+
+		data = self.pcap_handler.read_pcap(pcap_path)
+
+		compressed_packets = self.compress_packets(data)
+		input_data = self.generate_input_data(compressed_packets)
+
+		normalized_input, normalized_output = self.normalize_compressed_packets(input_data, [])
+
+		return normalized_input
+
+
 
 
 	#returns 2D list where list element is the list of pcap information for a specific pcap file based on index
@@ -666,6 +686,8 @@ class DataHandler:
 
 
 
+
+
 	#returns matrix that was read from csv file at path
 	def read_from_csv(self, path):
 		if os.path.isfile(path):
@@ -766,6 +788,31 @@ class DataHandler:
 
 		print("Load: "+str(packet['load']))
 		print()
+
+
+	#returns path of the most recent pcap file in "./Live sniffing"
+	#the most recent pcap file will be the one last when sorted
+	def get_latest_live_pcap(self):
+
+		path = self.live_sniffing_path
+
+		#gets list of pcap files in the dataset folder
+		only_files = [f for f in listdir(path) if isfile(join(path, f))]
+
+		pcap_list = []
+		for file in only_files:
+			if ".pcap" in file:
+				pcap_list.append(file)
+
+		#sorts pcap files alphanumerically
+		pcap_list.sort()
+
+
+		if len(pcap_list)>0:
+			return path+"/"+pcap_list[-1]
+		else:
+			return ""
+
 
 
 	#returns number of pcaps associated with the specified dataset_index

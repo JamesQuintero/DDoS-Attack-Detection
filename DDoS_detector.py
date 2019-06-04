@@ -130,6 +130,63 @@ class DDoSDetector:
 
 
 
+	#dataset_index can specify a dataset to predict on, or if None, 
+	# will represent predicting on live packets from "./Live sniffing"
+	def predict(self, dataset_index=None, pcap_index=None):
+
+		#if predicting from a dataset
+		if dataset_index!=None:
+
+			packets = self.data_handler.get_packet_information(dataset_index, pcap_index)
+			labels = self.data_handler.get_labels(dataset_index, pcap_index)
+
+			#turns each packet data from dictionaries into a flat 1d list. 
+			compressed_packets = self.data_handler.compress_packets(packets)
+
+
+			input_data = self.data_handler.generate_input_data(compressed_packets)
+
+			normalized_input, normalized_output = self.data_handler.normalize_compressed_packets(input_data, labels)
+
+			print("Num packets: "+str(len(normalized_input)))
+			print("Num labels: "+str(len(normalized_output)))
+
+
+			#feeds input data and output data into the neural network
+			predicted_labels = self.neural_network.predict(normalized_input)
+
+			# self.data_handler.save_prediction(dataset_index, pcap_index)
+
+
+		#predicting live pcap files
+		else:
+			latest_pcap_path = self.data_handler.get_latest_live_pcap()
+
+			if latest_pcap_path=="":
+				print("There is no pcap file to predict from")
+				return
+
+			print("Latest pcap path: "+str(latest_pcap_path))
+
+			#returns normalized input data from the specified pcap path
+			normalized_input = self.data_handler.get_live_input_data(latest_pcap_path)
+
+
+			print("Num packets: "+str(len(normalized_input)))
+
+			latest_packet = [normalized_input[-1]]
+
+
+			#feeds input data and output data into the neural network
+			predicted_label = self.neural_network.predict(latest_packet)
+			predicted_label = predicted_label[-1][0]
+
+			print("Predicted label: "+str(predicted_label))
+
+
+
+
+
 
 
 
@@ -138,6 +195,8 @@ if __name__=="__main__":
 	DDoS_detector = DDoSDetector()
 
 
-	DDoS_detector.train(1, None)
+	# DDoS_detector.train(1, None)
+
+	DDoS_detector.predict()
 
 	

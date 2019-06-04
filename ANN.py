@@ -175,6 +175,33 @@ class ANN:
 		# 	print("As of "+str(dates[-1])+", the United States is not in, or heading into, a recession")
 
 
+	#model predicts labels, and results are saved to a csv
+	def predict(self, input_data):
+
+		#splits data into train and test datasets for cross validation
+		input_data = np.array(input_data)
+
+		model_path = "./Models/model.h5"
+
+
+		#if model has never been trained, train it
+		if os.path.exists(model_path):
+			model = load_model(model_path)
+		else:
+			print("Model doesn't exist")
+			return []
+
+
+		# Predicting the Test set results
+		y_pred = model.predict(input_data)
+
+
+
+		return y_pred
+
+
+
+
 
 
 
