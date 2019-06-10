@@ -34,95 +34,22 @@ class DDoSDetector:
 		packets = []
 		labels = []
 
-		# #if getting all pcap files for specified dataset_index
-		# if pcap_index==None:
-		# 	num_pcaps = self.data_handler.get_num_pcaps(dataset_index)
-
-		# 	packets = []
-		# 	for x in range(0, num_pcaps):
-		# 		pcap_contents = self.data_handler.get_packet_information(dataset_index, x)
-		# 		packets.append(pcap_contents)
-
-		# 	labels = []
-		# 	for x in range(0, num_pcaps):
-		# 		pcap_labels = self.data_handler.get_labels(dataset_index, x)
-		# 		labels.append(pcap_labels)
-
-
-		# 	#turns each packet data from dictionaries into a flat 1d list. 
-		# 	compressed_packets = self.data_handler.compress_packets(packets)
-
-		# 	#turns 2d list of labels into 1d list
-		# 	compressed_labels = self.data_handler.compress_labels(labels)
-
-
-		# #if getting a specific pcap file
-		# else:
-		# 	packets = self.data_handler.get_packet_information(dataset_index, pcap_index)
-		# 	labels = self.data_handler.get_labels(dataset_index, pcap_index)
-
-		# 	#turns each packet data from dictionaries into a flat 1d list. 
-		# 	compressed_packets = self.data_handler.compress_packets([packets])
-
-		# 	#turns 2d list of labels into 1d list
-		# 	compressed_labels = self.data_handler.compress_labels([labels])
-
-		# 	# print("Num pcaps: "+str(len(packets)))
-		# 	# print("Num packets: "+str(len(packets[0])))
-
-
-		
-
-
 		packets = self.data_handler.get_packet_information(dataset_index, pcap_index)
 		labels = self.data_handler.get_labels(dataset_index, pcap_index)
 
 		#turns each packet data from dictionaries into a flat 1d list. 
 		compressed_packets = self.data_handler.compress_packets(packets)
 
-
-		# print("First 5 compressed packets: ")
-		# for x in range(0, 5):
-		# 	print(str(x))
-		# 	for y in range(0, len(compressed_packets[x])):
-		# 		print(str(y)+": "+str(compressed_packets[x][y]))
-		# 	print()
-		# print()
-
-
+		#takes compressed packet data and returns input variables values for neural network
 		input_data = self.data_handler.generate_input_data(compressed_packets)
 
-		# print("Input data ("+str(len(input_data))+" items): ")
-		# for x in range(0, len(input_data)):
-		# 	print(str(x)+": "+str(input_data[x]))
-		# 	input()
-		# print()
-
-
-
+		#takes input variables and labels, and normalizes them
 		normalized_input, normalized_output = self.data_handler.normalize_compressed_packets(input_data, labels)
 
 
-		# print("First 5 compressed normalized packets: ")
-		# for x in range(0, 5):
-		# 	print(str(x))
-		# 	for y in range(0, len(normalized_input[x])):
-		# 		print(str(y)+": "+str(normalized_input[x][y]))
-		# 	print()
-		# print()
-
-
-		# print("Labels: ")
-		# for x in range(0, len(labels)):
-		# 	print(str(x)+": "+str(labels[x]))
-		# 	input()
-		# print()
-
 		print("Num packets: "+str(len(normalized_input)))
 		print("Num labels: "+str(len(normalized_output)))
-
-
-
+		print("These should match")
 
 
 		#feeds input data and output data into the neural network

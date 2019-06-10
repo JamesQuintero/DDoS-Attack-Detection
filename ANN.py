@@ -40,22 +40,7 @@ class ANN:
 	#output is binary/categorical list denoting DDoS type
 	def train_model(self, input_data, output_data):
 
-		print("Input: ")
-		for x in range(0, 5):
-			print(str(x)+": "+str(input_data[x]))
-		print()
-
-		# print("Output: ")
-		# for x in range(0, len(output_data)):
-		# 	print(str(x)+": "+str(output_data[x]))
-		# print()
-
-
-
 		train_size = 0.7 #percentage of dataset to use for training
-
-
-
 
 		#splits data into train and test datasets for cross validation
 		X_train = np.array(input_data[ : int(len(input_data)*train_size)])
@@ -80,7 +65,6 @@ class ANN:
 			model.add(Dense(input_dim = len(X_train[0]), units = int(len(X_train[0])/1), kernel_initializer = 'uniform', activation = 'relu'))
 			model.add(Dropout(rate = 0.2))
 			model.add(Dense(units = int(len(X_train[0])/1), kernel_initializer = 'uniform', activation = 'relu'))
-			# model.add(Dense(units = int(len(X[0])/1), kernel_initializer = 'uniform', activation = 'relu'))
 			model.add(Dropout(rate = 0.2))
 			# Adding the output layer
 			#1 output layer node, since that'll be a percentage
@@ -109,16 +93,7 @@ class ANN:
 		y_pred = model.predict(X_test)
 		y_pred = (y_pred > 0.5)
 
-		print("--- %s seconds ---" % (time.time() - start_time))
-
-
-
-		start_time = time.time()
-		# Predicting the Test set results
-		y_pred = model.predict([X_test[-1]])
-		print("--- %s seconds ---" % (time.time() - start_time))
-		y_pred = (y_pred > 0.5)
-
+		print("--- %s seconds to predict ---" % (time.time() - start_time))
 
 		# Making the Confusion Matrix
 		from sklearn.metrics import confusion_matrix
@@ -157,38 +132,6 @@ class ANN:
 		print("Sensitivity: "+str(sensitivity))
 		print("Specificity: "+str(specificity))
 		print("Total: "+str(total))
-
-
-
-
-
-		# #predict whether US should be going into a recession today
-		# US_recession_pred = model.predict(X)
-
-
-		# to_save=[]
-		# for x in range(0, len(US_recession_pred)):
-		# 	row=[]
-		# 	row.append(dates[x])
-		# 	row.append(US_recession_pred[x][0])
-		# 	to_save.append(row)
-
-		# with open(data_save_path, 'w', newline='') as file:
-		# 	contents = csv.writer(file)
-		# 	contents.writerows(to_save)
-
-		# print()
-		# print()
-
-		# print(str(US_recession_pred[-1][0]*100)+"% recession likelihood")
-
-		# if US_recession_pred[-1][0]>0.5:
-		# 	print("As of "+str(dates[-1])+", the United States is in a recession")
-		# #because any percentage 1 or above is a considerable amount, be wary
-		# elif US_recession_pred[-1][0]>0.01:
-		# 	print("As of "+str(dates[-1])+", the United States is most likely heading into a recession")
-		# else:
-		# 	print("As of "+str(dates[-1])+", the United States is not in, or heading into, a recession")
 
 
 	#model predicts labels, and results are saved to a csv
