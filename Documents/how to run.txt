@@ -15,6 +15,13 @@ or
 
 - py -3.x -m pip install scikit-learn
 
+Install Tensorflow
+- py -3.x -m pip install tensorflow
+Install Keras
+- py -3.x -m pip install keras
+
+
+
 If an error comes back that python doesn't have module "install", then download get-pip.py, and install pip for the version of python you're using. 
 
 - sudo py -3.x get-pip.py
