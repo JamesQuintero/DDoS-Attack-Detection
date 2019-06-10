@@ -7,6 +7,7 @@
 
 import sys
 import os
+import time
 
 import numpy as np
 
@@ -101,14 +102,28 @@ class ANN:
 
 
 
+		start_time = time.time()
+
 
 		# Predicting the Test set results
 		y_pred = model.predict(X_test)
 		y_pred = (y_pred > 0.5)
 
+		print("--- %s seconds ---" % (time.time() - start_time))
+
+
+
+		start_time = time.time()
+		# Predicting the Test set results
+		y_pred = model.predict([X_test[-1]])
+		print("--- %s seconds ---" % (time.time() - start_time))
+		y_pred = (y_pred > 0.5)
+
+
 		# Making the Confusion Matrix
 		from sklearn.metrics import confusion_matrix
 		cm = confusion_matrix(y_test, y_pred)
+
 
 		print("Confusion matrix: ")
 		print(str(cm))
