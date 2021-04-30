@@ -13,7 +13,7 @@ Steps to add a new dataset:
 1) Create new directory in ./Datasets, with the name being anything you'd like. 
 2) Add sequence of pcap files to the new directory
 3) Add a .csv in ./Labels, which will have our labels. 
-    * Each row in this csv will correspond to each package in all of the pcap files.
+    * Each row in this csv will correspond to each packet in all of the pcap files.
 	* Columns: 
 	    * source
 		* source_port
