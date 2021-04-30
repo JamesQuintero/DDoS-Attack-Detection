@@ -1,7 +1,7 @@
 ## James Quintero
 ## https://github.com/JamesQuintero
 ## Created: 5/2019
-## Modified: 6/2019
+## Modified: 4/2021
 ##
 ## Handles all the data required for the program
 
@@ -20,7 +20,7 @@ import datetime
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.externals import joblib
+import joblib
 
 from pcap_handler import PCAPHandler #for reading pcap files
 
@@ -38,9 +38,6 @@ class DataHandler:
 
 
 	IP_type = {}
-
-	# #dictionary of file paths where keys are the filenames and values are the relative path
-	# dataset_paths = {}
 
 	#list of dataset names that correspond to the filename
 	datasets = []
@@ -63,36 +60,6 @@ class DataHandler:
 		self.IP_type[6] = "TCP"
 		self.IP_type[17] = "UDP"
 		self.IP_type[58] = "ICMPv6"
-
-
-
-	# #returns 2D list where list element is the list of pcap information for a specific pcap file based on index
-	# #if pcap_index is None, then read and return contents of all pcap files in the dataset folder
-	# def get_packet_information(self, dataset_index, pcap_index=None):
-	# 	#gets the path of the specified dataset
-	# 	dataset_path = self.get_dataset_path(dataset_index)
-
-
-	# 	if pcap_index==None:
-	# 		pcap_information = []
-
-	# 		#retrieves all packet information from the pcap files
-	# 		for x in range(0, len(pcap_list)):
-	# 			pcap_path = pcap_list[x]
-	# 			print("Reading pcap "+str(pcap_path))
-
-	# 			data = self.pcap_handler.read_pcap(pcap_path)
-
-	# 			print("Finished reading pcap file")
-	# 			print()
-	# 			# input()
-
-	# 			pcap_information.extend(data)
-
-
-	# 	print("Total number of packets: "+str(len(pcap_information)))
-
-	# 	return pcap_information
 
 
 	#param is a full path to a live pcap file
@@ -174,20 +141,9 @@ class DataHandler:
 
 		new_packets = []
 		for x in range(0, len(packets)):
-
 			packet = packets[x]
 
-			# self.print_packet(packet)
-
 			compressed_packet = self.pcap_handler.compress_packet(packet)
-
-			# print()
-			# print("Compressed packet: ")
-			# for y in range(0, len(compressed_packet)):
-			# 	print(str(y)+": "+str(compressed_packet[y]))
-			# print()
-
-			
 			new_packets.append(compressed_packet)
 
 		return new_packets
@@ -325,20 +281,7 @@ class DataHandler:
 			row.append(timestamp_difference100)
 			row.append(timestamp_difference1000)
 
-
-
-
-
-
-			# print()
-			# print(row)
-			# print()
-
-
 			to_return.append(row)
-
-			# input()
-
 
 
 
@@ -350,16 +293,15 @@ class DataHandler:
 
 
 	#param is a 2D list of packet data, and returned value is a 2D list of the same data, but normalized. 
-	def normalize_compressed_packets(self, compressed_packets, labels):
+	def normalize_compressed_packets(self, compressed_packets, labels, dataset_index=0):
 		unnormalized_input_data = compressed_packets.copy()
 		unnormalized_output_data = labels.copy()
 		input_data = compressed_packets
 		output_data = labels
 
-
-
 		#saves normalization params
-		input_scaler_filename = "./Models/input_normalization_params.saver"
+		dataset_name = self.get_dataset_filename(dataset_index)
+		input_scaler_filename = "./Models/input_normalization_params_{}.saver".format(dataset_name)
 
 		#if have a saved normalization file, then use it
 		if os.path.isfile(input_scaler_filename):
@@ -374,14 +316,12 @@ class DataHandler:
 				input_data = input_scaler.fit_transform(input_data)
 				input_data = np.array(input_data).tolist()
 			except Exception as error:
-				print(error)
+				print("Error when normalizing: {}".format(error))
 
 			#saves normalization params for future use
 			joblib.dump(input_scaler, input_scaler_filename)
 
-
-
-
+		#convert string label to int target
 		output_data = []
 		for x in range(0, len(labels)):
 			if labels[x][1]=="BENIGN":
@@ -390,17 +330,7 @@ class DataHandler:
 				output_data.append(1)
 
 
-
-
 		return input_data, output_data
-
-
-
-
-
-
-
-
 
 
 
@@ -418,8 +348,6 @@ class DataHandler:
 			labels = self.read_from_csv(label_path)
 		#if retrieving labels for all pcap files belonging to dataset_index
 		else:
-			print("got here")
-
 			labels = []
 			for x in range(0, len(self.pcap_files[dataset_index])):
 				label_path = self.get_label_path(dataset_index, x)
@@ -428,10 +356,6 @@ class DataHandler:
 				temp_labels = self.read_from_csv(label_path)
 
 				labels.extend(temp_labels)
-
-
-		
-
 
 		return labels
 
@@ -502,10 +426,6 @@ class DataHandler:
 				label_dictionary[source][destination] = []
 
 			label_dictionary[source][destination].append(initial_labels[x])
-
-
-		# print("")
-
 
 
 
@@ -600,7 +520,8 @@ class DataHandler:
 			row = []
 			row.append(x) #packet number
 
-			print("At packet "+str(x))
+			if x%100 == 0:
+				print("At packet {}/{}".format(x, len(dataset_contents)))
 
 			# print("dataset contents[x]: "+str(dataset_contents[x]))
 
@@ -633,12 +554,10 @@ class DataHandler:
 		#returns empty path if invalid dataset index
 		if dataset_index<0 or dataset_index >= len(self.datasets):
 			print("Invalid dataset index in get_dataset_path()")
-			return ""
+			return []
 
 		dataset_name = self.datasets[dataset_index]
-
 		label_path = self.label_path+"/"+str(dataset_name)+".csv"
-
 		print("label path: "+str(label_path))
 
 
@@ -648,15 +567,6 @@ class DataHandler:
 		contents.pop(0)
 
 		print("Num packets: "+str(len(contents)))
-
-		# for x in range(0, 5):
-		# 	print(str(x)+": "+str(contents[x]))
-
-		# print()
-
-		# for x in range(-1, -5, -1):
-		# 	print(str(x)+": "+str(contents[x]))
-
 
 		new_contents = []
 
@@ -710,13 +620,6 @@ class DataHandler:
 		with open(path, 'w', newline='') as file:
 			contents = csv.writer(file)
 			contents.writerows(data)
-
-
-	#prints list of datasets
-	def print_dataset_list(self):
-		print("Datasets: ")
-		for x in range(0, len(self.datasets)):
-			print(str(x)+") "+str(self.datasets[x]))
 
 
 
@@ -781,7 +684,6 @@ class DataHandler:
 
 
 		else:
-			# print("")
 			pass
 
 

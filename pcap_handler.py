@@ -151,16 +151,6 @@ class PCAPHandler:
 		for x in range(0, len(packets)):
 			pkt = packets[x]
 
-			# try:
-			# 	pkt.show()
-			# except Exception as error:
-			# 	print("Error when printing: "+str(error))
-			# 	input()
-
-			# print("Timestamp: "+str(pkt['Ethernet'].time))
-			# input()
-
-
 
 			# print(pkt[IP].dst)
 			# print()
@@ -208,9 +198,6 @@ class PCAPHandler:
 			if overall_packet_type=="802.3":
 				self.read_LAN_packet(packet_info, pkt)
 
-				print(packet_info)
-				input("Continue...")
-
 
 
 
@@ -240,8 +227,6 @@ class PCAPHandler:
 				pass
 
 			else:
-				# print("Overall_packet_type: "+str(overall_packet_type))
-				# input()
 				pass
 
 
@@ -261,8 +246,6 @@ class PCAPHandler:
 
 			all_packets.append(packet_info)
 
-			# input()
-
 
 
 		return all_packets
@@ -281,10 +264,6 @@ class PCAPHandler:
 		# 	# print(bytes(pkt))
 
 		# 	print(Ether(pkt))
-
-
-
-		# 	input()
 
 
 
@@ -442,8 +421,6 @@ class PCAPHandler:
 			packet_info['Ethernet']['timestamp'] = pkt['Ethernet'].time
 		except Exception as error:
 			pkt.show()
-			print("Error: "+str(error))
-			input()
 
 
 	def read_LAN_packet(self, packet_info, pkt):
@@ -503,7 +480,8 @@ class PCAPHandler:
 			packet_info['ARP']['hardware_destination'] = pkt[ARP].hwdst
 			packet_info['ARP']['protocol_destination'] = pkt[ARP].pdst
 		except Exception as error:
-			print("Couldn't read ARP packet: "+str(error))
+			# print("Couldn't read ARP packet: "+str(error))
+			pass
 
 
 	def read_IPv6_packet(self, packet_info, pkt):
@@ -528,7 +506,6 @@ class PCAPHandler:
 		#if packet is of type TCP
 		elif IPv6_packet_type=="TCP": 
 			self.read_TCP_section(packet_info, pkt)
-			input()
 
 		#if packet is of type UDP
 		elif IPv6_packet_type=="UDP":
@@ -536,15 +513,14 @@ class PCAPHandler:
 
 		#if packet is of type ICMP
 		elif IPv6_packet_type=="ICMP":
-			input()
+			input("ICMP packet type not yet supported...")
 
 		elif IPv6_packet_type=="ICMPv6":
 			self.read_ICMPv6_section(packet_info, pkt)
 
 		else:
-			print("got here")
 			print(IPv6_packet_type)
-			input()
+			input("Unrecognized IPv6 packet type...")
 
 
 
@@ -572,7 +548,8 @@ class PCAPHandler:
 			packet_info['packet_info']['udp_len'] = pkt[UDP].len
 			packet_info['packet_info']['udp_checksum'] = pkt[UDP].chksum
 		except Exception as error:
-			print("Couldn't read UDP section: "+str(error))
+			# print("Couldn't read UDP section: "+str(error))
+			pass
 
 
 		#checks if this packet contains an NTP section
@@ -611,7 +588,8 @@ class PCAPHandler:
 			packet_info['packet_info']['tcp_checksum'] = pkt[TCP].chksum
 			packet_info['packet_info']['tcp_options'] = pkt[TCP].options
 		except Exception as error:
-			print("Couldn't read TCP section: "+str(error))
+			# print("Couldn't read TCP section: "+str(error))
+			pass
 
 
 
@@ -625,7 +603,8 @@ class PCAPHandler:
 			packet_info['packet_info']['icmp_type'] = pkt[ICMP].type
 			packet_info['packet_info']['icmp_checksum'] = pkt[ICMP].chksum
 		except Exception as error:
-			print("Couldn't read ICMP section: "+str(error))
+			# print("Couldn't read ICMP section: "+str(error))
+			pass
 
 
 	def read_ICMPv6_section(self, packet_info, pkt):
@@ -641,7 +620,7 @@ class PCAPHandler:
 			packet_info['packet_info']['icmp_checksum'] = pkt['ICMPv6 Neighbor Discovery - Neighbor Solicitation'].cksum
 			packet_info['packet_info']['target'] = pkt['ICMPv6 Neighbor Discovery - Neighbor Solicitation'].tgt
 		except:
-			print("Couldn't retrieve \"ICMPv6 Neighbor Discovery - Neighbor Solicitation\" information")
+			# print("Couldn't retrieve \"ICMPv6 Neighbor Discovery - Neighbor Solicitation\" information")
 			pass
 
 

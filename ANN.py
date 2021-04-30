@@ -1,7 +1,7 @@
 ## James Quintero
 ## https://github.com/JamesQuintero
 ## Created: 5/2019
-## Modified: 6/2019
+## Modified: 4/2021
 ##
 ## Handles all the neural network modeling
 
@@ -22,14 +22,12 @@ from keras.layers import LeakyReLU
 from keras.layers import PReLU
 from keras.layers import Bidirectional
 
-
 from data_handler import DataHandler
 
 
 
 class ANN:
 
-	#DataHandler class object
 	data_handler = None
 
 	def __init__(self):
@@ -38,7 +36,7 @@ class ANN:
 
 	#input is a 2D list of unnormalized data
 	#output is binary/categorical list denoting DDoS type
-	def train_model(self, input_data, output_data):
+	def train_model(self, input_data, output_data, dataset_index):
 
 		train_size = 0.7 #percentage of dataset to use for training
 
@@ -49,7 +47,8 @@ class ANN:
 		y_test = np.array(output_data[int(len(output_data)*train_size) : ])
 
 
-		model_path = "./Models/model.h5"
+		dataset_name = self.data_handler.get_dataset_filename(dataset_index)
+		model_path = "./Models/{}.h5".format(dataset_name)
 
 
 		#if model has never been trained, train it
@@ -88,7 +87,7 @@ class ANN:
 
 		start_time = time.time()
 
-
+		print("Testing neural network on hold-out portion of the dataset.")
 		# Predicting the Test set results
 		y_pred = model.predict(X_test)
 		y_pred = (y_pred > 0.5)
@@ -103,8 +102,9 @@ class ANN:
 		print("Confusion matrix: ")
 		print(str(cm))
 
-
-
+		if len(cm) == 1:
+			print("Undesirable confusion matrix, the neural network predicted on a single class for all data points. Try training with a better configuration, or testing with more occurances of both target classes.")
+			return
 
 		#True Negative
 		TN = cm[0][0]
@@ -135,19 +135,19 @@ class ANN:
 
 
 	#model predicts labels, and results are saved to a csv
-	def predict(self, input_data):
+	def predict(self, dataset_index, input_data):
 
 		#splits data into train and test datasets for cross validation
 		input_data = np.array(input_data)
 
-		model_path = "./Models/model.h5"
-
+		dataset_name = self.data_handler.get_dataset_filename(dataset_index)
+		model_path = "./Models/{}.h5".format(dataset_name)
 
 		#if model has never been trained, train it
 		if os.path.exists(model_path):
 			model = load_model(model_path)
 		else:
-			print("Model doesn't exist")
+			print("Model {} doesn't exist".format(model_path))
 			return []
 
 
